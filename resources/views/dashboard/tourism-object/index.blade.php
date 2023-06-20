@@ -15,8 +15,8 @@
       <thead>
         <tr>
           <th scope="col" class="text-center">No</th>
-          <th scope="col" class="text-center">Nama</th>
-          <th scope="col" class="text-center">Jenis Kelamin</th>
+          <th scope="col" class="text-center">Nama Karyawan</th>
+          <th scope="col" class="text-center">Alamat</th>
           <th scope="col" class="text-center">Aksi</th>
         </tr>
       </thead>

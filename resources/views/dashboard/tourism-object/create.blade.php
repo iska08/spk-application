@@ -9,7 +9,7 @@
     @csrf
 
     <div class="mb-3">
-      <label for="name" class="form-label">Nama</label>
+      <label for="name" class="form-label">Nama Karyawan</label>
       <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" autofocus required>
 
       @error('name')
@@ -20,12 +20,8 @@
     </div>
 
     <div class="mb-3">
-      <label for="address" class="form-label">Jenis Kelamin</label>
-      <select class="form-select @error("address") is-invalid @enderror" id="address" name="address" required>
-        <option value="" disabled selected>Pilih</option>
-        <option value="PRIA" {{ old('address') === 'PRIA' ?  'selected' : '' }}>Pria</option>
-        <option value="WANITA" {{ old('address') === 'WANITA' ?  'selected' : '' }}>Wanita</option>
-      </select>
+      <label for="address" class="form-label">Alamat</label>
+      <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address" value="{{ old('address') }}" required>
 
       @error('address')
         <div class="invalid-feedback">

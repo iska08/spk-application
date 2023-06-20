@@ -2,23 +2,23 @@
 
 @section('content')
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">User Management</h1>
+    <h1 class="h2">Manajemen User</h1>
   </div>
 
   <div class="table-responsive col-lg-10">
     <a href="/dashboard/users/create" class="btn btn-primary mb-3">
       <span data-feather="plus"></span>
-      Create New User
+      Buat User Baru
     </a>
 
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col" class="text-center">#</th>
-          <th scope="col" class="text-center">Name</th>
+          <th scope="col" class="text-center">No</th>
+          <th scope="col" class="text-center">Nama</th>
           <th scope="col" class="text-center">Username</th>
           <th scope="col" class="text-center">Level</th>
-          <th scope="col" class="text-center">Action</th>
+          <th scope="col" class="text-center">Aksi</th>
         </tr>
       </thead>
       <tbody>
@@ -48,7 +48,7 @@
         @else
           <tr>
             <td colspan="4" class="text-danger text-center p-4">
-              <h4>You haven't create any users yet</h4>
+              <h4>Anda belum membuat pengguna apa pun!</h4>
             </td>
           </tr>
         @endif
