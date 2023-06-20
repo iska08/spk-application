@@ -26,7 +26,7 @@
         <input type="hidden" name="alternative_id[]" value="{{ $value->id }}">
 
         <label for="{{ str_replace(' ','', $value->criteria->name) }}" class="form-label">
-          Nilai {{ $value->criteria->name }}
+          Nilai dari {{ $value->criteria->name }}
         </label>
         <input type="text" id="{{ str_replace(' ','', $value->criteria->name) }}" class="form-control @error('alternative_value') 'is-invalid' : '' @enderror" name="alternative_value[]" placeholder="Enter the value" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57)|| event.charCode == 46)" value="{{ floatval($value->alternative_value) }}" maxlength="5" autocomplete="off" required>
 

@@ -97,7 +97,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addAlternativeModalLabel">Add Alternative</h5>
+          <h5 class="modal-title" id="addAlternativeModalLabel">Tambah Bobot Alternatif</h5>
           <button style="background-color: transparent" type="button" class="btn-close-muted" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form action="/dashboard/alternatives" method="post">
@@ -105,29 +105,29 @@
             <span class="mb-2">Rules :</span>
             <ul class="list-group mb-2">
               <li class="list-group-item bg-success text-white">
-                The minimum number is 0
+                Nilai Minimal Adalah 0
               </li>
               <li class="list-group-item bg-success text-white">
-                The maximum number is 999
+                Nilai Minimal Adalah 5
               </li>
               <li class="list-group-item bg-success text-white">
-                Please use dot (.) if you want to make a decimal input
+                Tolong gunakan titik (.) jika nilai desimal.
               </li>
             </ul>
 
               @csrf
               <div class="my-2">
-                <label for="tourism_object_id" class="form-label">Tourism Object</label>
+                <label for="tourism_object_id" class="form-label">Nama Alternatif</label>
                 <select class="form-select @error('tourism_object_id') 'is-invalid' : ''  @enderror" id="tourism_object_id" name="tourism_object_id" required>
                   @if ($tourism_objects->count())
-                    <option disabled selected>--Choose One--</option>
+                    <option disabled selected>--Pilih--</option>
                     @foreach ($tourism_objects as $tourism)
                       <option value="{{ $tourism->id }}">
                         {{ $tourism->name }}
                       </option>
                     @endforeach
                   @else
-                    <option disabled value="" selected>--NO DATA FOUND--</option>
+                    <option disabled value="" selected>--Data Tidak Ditemukan--</option>
                   @endif
                 </select>
 
@@ -144,9 +144,9 @@
 
                   <div class="my-2">
                     <label for="{{ str_replace(' ','', $criteria->name) }}" class="form-label">
-                      Value of {{ $criteria->name }}
+                      Nilai dari {{ $criteria->name }}
                     </label>
-                    <input type="text" id="{{ str_replace(' ','', $criteria->name) }}" class="form-control @error('alternative_value') 'is-invalid' : '' @enderror" name="alternative_value[]" placeholder="Enter the value" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57)|| event.charCode == 46)" maxlength="5" autocomplete="off" required>
+                    <input type="text" id="{{ str_replace(' ','', $criteria->name) }}" class="form-control @error('alternative_value') 'is-invalid' : '' @enderror" name="alternative_value[]" placeholder="Masukkan Nilai" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57)|| event.charCode == 46)" maxlength="5" autocomplete="off" required>
 
                     @error('alternative_value')
                       <div class="invalid-feedback">
@@ -159,8 +159,8 @@
 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="{{ $criterias->count() ? "submit" : "button" }}" class="btn btn-primary">Add Alternative</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="{{ $criterias->count() ? "submit" : "button" }}" class="btn btn-primary">Tambah Bobot Alternatif</button>
           </div>
         </form>
       </div>
