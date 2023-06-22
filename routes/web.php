@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AdminUserController;
-use App\Http\Controllers\LandingPagesController;
-use App\Http\Controllers\AdminCriteriaController;
-use App\Http\Controllers\DashboardRankController;
-use App\Http\Controllers\AdminAlternativeController;
-use App\Http\Controllers\DashboardProfileController;
-use App\Http\Controllers\AdminTourismObjectController;
-use App\Http\Controllers\DashboardCriteriaComparisonController;
+use App\Http\Controllers\AlternativeController;
+use App\Http\Controllers\CriteriaRatingController;
+use App\Http\Controllers\CriteriaWeightController;
+use App\Http\Controllers\DecisionController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NormalizationController;
+use App\Http\Controllers\RankController;
+use App\Models\CriteriaRating;
+use App\Models\CriteriaWeight;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,56 +22,18 @@ use App\Http\Controllers\DashboardCriteriaComparisonController;
 |
 */
 
-Route::get('/', [LandingPagesController::class, 'index']) -> name('home');
-Route::get('/course', [LandingPagesController::class, 'course']) -> name('course');
-Route::get('/statistics', [LandingPagesController::class, 'statistics']) -> name('statistics');
-Route::get('/feature', [LandingPagesController::class, 'feature']) -> name('features');
-Route::get('/system-spk', [LandingPagesController::class, 'systemSpk']) -> name('system-spk');
-Route::get('/contact', [LandingPagesController::class, 'contact']) -> name('contact');
+Route::get('/', [HomeController::class, 'index']);
 
+Route::resources([
+'alternatives' => AlternativeController::class,
+'criteriaratings' => CriteriaRatingController::class,
+'criteriaweights' => CriteriaWeightController::class
+]);
 
-Route::middleware('guest')->group(function () {
-  Route::get('/login', [AuthController::class, 'index'])->name('login');
-  Route::post('/login', [AuthController::class, 'authenticate']);
-  Route::get('/signup', [AuthController::class, 'signUp']);
-  Route::post('/signup', [AuthController::class, 'store']);
-});
+Route::get('home', [HomeController::class, 'index']);
 
-Route::middleware('auth')->group(function () {
-  Route::get('/signout', [AuthController::class, 'signOut']);
+Route::get('decision', [DecisionController::class, 'index']);
 
-  Route::get('/dashboard', function () {
-    return view('dashboard.index', [
-      'title' => 'Dashboard'
-    ]);
-  });
+Route::get('normalization', [NormalizationController::class, 'index']);
 
-  Route::get('dashboard/profile', [DashboardProfileController::class, 'index']);
-  Route::put('dashboard/profile/{user}', [DashboardProfileController::class, 'update']);
-
-  Route::get('dashboard/criteria-comparisons', [DashboardCriteriaComparisonController::class, 'index']);
-  Route::post('dashboard/criteria-comparisons', [DashboardCriteriaComparisonController::class, 'store']);
-
-  Route::get('dashboard/criteria-comparisons/{criteria_analysis}', [DashboardCriteriaComparisonController::class, 'show']);
-
-  Route::put('dashboard/criteria-comparisons/{criteria_analysis}', [DashboardCriteriaComparisonController::class, 'updateValue']);
-
-  Route::delete('dashboard/criteria-comparisons/{criteria_analysis}', [DashboardCriteriaComparisonController::class, 'destroy']);
-
-  Route::get('dashboard/criteria-comparisons/result/{criteria_analysis}', [DashboardCriteriaComparisonController::class, 'result']);
-
-  Route::get('dashboard/final-ranking', [DashboardRankController::class, 'index']);
-  Route::get('dashboard/final-ranking/{criteria_analysis}', [DashboardRankController::class, 'show']);
-
-  Route::resources([
-    'dashboard/tourism-objects' => AdminTourismObjectController::class,
-    'dashboard/criterias'       => AdminCriteriaController::class,
-    'dashboard/users'           => AdminUserController::class,
-    'dashboard/alternatives'    => AdminAlternativeController::class
-  ], ['except' => 'show']);
-});
-
-// Testing
-Route::get('/testing', function () {
-    return view('layouts.main2');
-});
+Route::get('rank', [RankController::class, 'index']);
