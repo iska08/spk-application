@@ -49,8 +49,6 @@ class RankController extends Controller
             ->leftJoin('criteriaratings', 'criteriaratings.id', '=', 'alternativescores.rating_id')
             ->get();
 
-
-
         $alternatives = Alternative::get();
 
         $criteriaweights = CriteriaWeight::get();
@@ -69,20 +67,27 @@ class RankController extends Controller
                 })->toArray();
 
                 // array_filter for removing null value caused by map,
-                // array_values for reiindex the array
+                // array_values for reindexing the array
                 $rates = array_values(array_filter($rates));
 
-                if ($cw->type == 'benefit') {
-                    $result = $afilter[$icw]->rating / max($rates);
-                    $msg = 'rate ' . $afilter[$icw]->rating . ' max ' . max($rates) . ' res ' . $result;
-                } elseif ($cw->type == 'cost') {
-                    $result = min($rates) / $afilter[$icw]->rating;
+                $total = 0;
+                foreach ($rates as $value) {
+                    $total += pow($value, 2);
                 }
-                $result *= $cw->weight;
-                $afilter[$icw]->rating = round($result, 2);
+                $sqrt = sqrt($total);
+                $normalisasi = $afilter[$icw]->rating / $sqrt;
+
+                // MENGHITUNG NILAI DISTANCE SCORE
+                $a = $normalisasi;
+                $r = $cw->id;
+                $distance = pow(pow(0.5 * $a, 3) + pow(0.5 * $r, 3), 1/3);
+
+                // MENGHITUNG NILAI PREFERENSI DAN NILAI DISTANCE SCORE
+                $pref = $distance * $cw->weight;
+                $result = round($pref, 6);
+                $afilter[$icw]->rating = number_format($result, 6, '.', '');
             }
         }
-
         return view('rank', compact('scores', 'alternatives', 'criteriaweights'))->with('i', 0);
     }
 }

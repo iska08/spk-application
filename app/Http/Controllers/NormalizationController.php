@@ -25,14 +25,11 @@ class NormalizationController extends Controller
             'criteriaweights.name as criteria',
             'criteriaratings.rating as rating',
             'criteriaratings.description as description')
-        ->leftJoin('alternatives', 'alternatives.id', '=', 'alternativescores.alternative_id')
-        ->leftJoin('criteriaweights', 'criteriaweights.id', '=', 'alternativescores.criteria_id')
-        ->leftJoin('criteriaratings', 'criteriaratings.id', '=', 'alternativescores.rating_id')
-        ->get();
-
-        // duplicate scores object to get rating value later,
-        // because any call to $scores object is pass by reference
-        // clone, replica, tobase didnt work
+            ->leftJoin('alternatives', 'alternatives.id', '=', 'alternativescores.alternative_id')
+            ->leftJoin('criteriaweights', 'criteriaweights.id', '=', 'alternativescores.criteria_id')
+            ->leftJoin('criteriaratings', 'criteriaratings.id', '=', 'alternativescores.rating_id')
+            ->get();
+            
         $cscores = AlternativeScore::select(
             'alternativescores.id as id',
             'alternatives.id as ida',
@@ -42,44 +39,41 @@ class NormalizationController extends Controller
             'criteriaweights.name as criteria',
             'criteriaratings.rating as rating',
             'criteriaratings.description as description')
-        ->leftJoin('alternatives', 'alternatives.id', '=', 'alternativescores.alternative_id')
-        ->leftJoin('criteriaweights', 'criteriaweights.id', '=', 'alternativescores.criteria_id')
-        ->leftJoin('criteriaratings', 'criteriaratings.id', '=', 'alternativescores.rating_id')
-        ->get();
-
-
+            ->leftJoin('alternatives', 'alternatives.id', '=', 'alternativescores.alternative_id')
+            ->leftJoin('criteriaweights', 'criteriaweights.id', '=', 'alternativescores.criteria_id')
+            ->leftJoin('criteriaratings', 'criteriaratings.id', '=', 'alternativescores.rating_id')
+            ->get();
 
         $alternatives = Alternative::get();
-
         $criteriaweights = CriteriaWeight::get();
 
         // Normalization
-        foreach($alternatives as $a){
+        foreach ($alternatives as $a) {
             // Get all scores for each alternative id
             $afilter = $scores->where('ida', $a->id)->values()->all();
             // Loop each criteria
-            foreach($criteriaweights as $icw => $cw){
+            foreach ($criteriaweights as $icw => $cw) {
                 // Get all rating value for each criteria
-                $rates = $cscores->map(function($val) use ($cw){
-                    if($cw->id == $val->idw ){
+                $rates = $cscores->map(function ($val) use ($cw) {
+                    if ($cw->id == $val->idw) {
                         return $val->rating;
                     }
                 })->toArray();
 
                 // array_filter for removing null value caused by map,
-                // array_values for reiindex the array
+                // array_values for reindexing the array
                 $rates = array_values(array_filter($rates));
 
-                if ($cw->type == 'benefit') {
-                    $result = $afilter[$icw]->rating / max($rates);
-                    $msg = 'rate ' . $afilter[$icw]->rating . ' max ' . max($rates) . ' res ' . $result;
-                } elseif ($cw->type == 'cost') {
-                    $result = min($rates) / $afilter[$icw]->rating;
+                $total = 0;
+                foreach ($rates as $value) {
+                    $total += pow($value, 2);
                 }
-                $afilter[$icw]->rating = round($result, 2);
+                $sqrt = sqrt($total);
+                $normalisasi = $afilter[$icw]->rating / $sqrt;
+                $result = number_format($normalisasi, 6, '.', ''); // Output dengan 6 digit di belakang koma
+                $afilter[$icw]->rating = $result;
             }
         }
-
         return view('normalization', compact('scores', 'alternatives', 'criteriaweights'))->with('i', 0);
     }
 }

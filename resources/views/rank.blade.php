@@ -20,7 +20,8 @@
                             <table id="mytable" class="display nowrap table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Alternatif</th>
+                                        {{-- <th>No</th> --}}
+                                        <th>Kode</th>
                                         @foreach ($criteriaweights as $c)
                                         <th>{{$c->name}}</th>
                                         @endforeach
@@ -30,6 +31,7 @@
                                 <tbody>
                                     @foreach ($alternatives as $a)
                                     <tr>
+                                        {{-- <td>{{ ++$i }}</td> --}}
                                         <td>{{$a->name}}</td>
                                         @php
                                         $scr = $scores->where('ida', $a->id)->all();
