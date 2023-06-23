@@ -1,23 +1,16 @@
 @extends('template.index')
-
 @section('content')
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Add new criteria</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                    <h1 class="m-0">Tambah Kriteria Baru</h1>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+        </div>
     </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -26,7 +19,7 @@
                         <div class="card-body">
                             @if ($errors->any())
                             <div class="alert alert-danger">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
                                 <ul>
                                     @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -37,7 +30,7 @@
                             <form action="{{route('criteriaratings.store')}}" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="criteria">Criteria :</label>
+                                    <label for="criteria">Kode Kriteria</label>
                                     <select class="form-control" id="criteria" name="criteria_id">
                                         @foreach ($criteriaweight as $c)
                                     <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -45,33 +38,24 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="rating">Rating :</label>
+                                    <label for="rating">Rating</label>
                                     <div class="input-group">
-                                        <input id="rating" type="text" class="form-control" placeholder="e.g. 1.0"
-                                            name="rating" required>
+                                        <input id="rating" type="text" class="form-control" placeholder="Contoh: 5" name="rating" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="description">Description :</label>
+                                    <label for="description">Deskripsi</label>
                                     <div class="input-group">
-                                        <input id="description" type="text" class="form-control" placeholder="e.g. Good"
-                                            name="description" required>
+                                        <input id="description" type="text" class="form-control" placeholder="Contoh: Sangat Baik" name="description" required>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Kirim</button>
                             </form>
                         </div>
                     </div>
-                    <!-- /.card -->
                 </div>
-                <!-- /.col-md-6 -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
     </div>
-    <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
 @endsection
-

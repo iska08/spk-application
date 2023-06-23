@@ -1,23 +1,16 @@
 @extends('template.index')
-
 @section('content')
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Add new alternative</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                    <h1 class="m-0">Tambah Alternatif Baru</h1>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+        </div>
     </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -26,7 +19,7 @@
                         <div class="card-body">
                             @if ($errors->any())
                             <div class="alert alert-danger">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
                                 <ul>
                                     @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -37,15 +30,14 @@
                             <form action="{{route('alternatives.store')}}" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="name">Name :</label>
+                                    <label for="name">Nama</label>
                                     <div class="input-group">
-                                        <input id="name" type="text" class="form-control"
-                                            placeholder="Someone or Something" name="name" required>
+                                        <input id="name" type="text" class="form-control" placeholder="Isi dengan nama orang atau kode" name="name" required>
                                     </div>
                                 </div>
                                 @foreach ($criteriaweights as $cw)
                                 <div class="form-group">
-                                    <label for="criteria[{{$cw->id}}]">{{$cw->name}} :</label>
+                                    <label for="criteria[{{$cw->id}}]">{{$cw->name}} - {{$cw->description}}</label>
                                     <select class="form-control" id="criteria[{{$cw->id}}]"
                                         name="criteria[{{$cw->id}}]">
                                         <!--
@@ -54,24 +46,18 @@
                                         @endphp
                                         -->
                                         @foreach ($res as $cr)
-                                        <option value="{{$cr->id}}">{{$cr->description}}</option>
+                                        <option value="{{$cr->id}}">{{$cr->rating}} - {{$cr->description}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 @endforeach
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Kirim</button>
                             </form>
                         </div>
                     </div>
-                    <!-- /.card -->
                 </div>
-                <!-- /.col-md-6 -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
     </div>
-    <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
 @endsection
