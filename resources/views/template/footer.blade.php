@@ -1,10 +1,10 @@
 <footer class="main-footer">
     <strong>
         <?php
+            date_default_timezone_set("Asia/Jakarta");
             $namaHari = array("Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu");
             $indeksHari = date('w'); // Mendapatkan indeks hari dalam seminggu
             $tanggal = date('d-m-Y');
-            date_default_timezone_set("Asia/Jakarta");
             $jam = date('H:i:s');
         ?>
         {{ $namaHari[$indeksHari] }}, {{ $tanggal }} || <span id="jam" style="font-size:24"></span>
