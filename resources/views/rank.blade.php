@@ -14,13 +14,13 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
                             <table id="mytable" class="display nowrap table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        {{-- <th>No</th> --}}
+                                        <th>No</th>
                                         <th>Kode</th>
                                         @foreach ($criteriaweights as $c)
                                         <th>{{$c->name}}</th>
@@ -31,7 +31,7 @@
                                 <tbody>
                                     @foreach ($alternatives as $a)
                                     <tr>
-                                        {{-- <td>{{ ++$i }}</td> --}}
+                                        <td>{{ ++$i }}</td>
                                         <td>{{$a->name}}</td>
                                         @php
                                         $scr = $scores->where('ida', $a->id)->all();

@@ -14,7 +14,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
                             <table id="mytable" class="display nowrap table table-striped table-bordered">
