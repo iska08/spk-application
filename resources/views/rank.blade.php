@@ -30,21 +30,17 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($alternatives as $a)
-                                    <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{$a->name}}</td>
-                                        @php
-                                        $scr = $scores->where('ida', $a->id)->all();
-                                        $total = 0;
-                                        @endphp
-                                        @foreach ($scr as $s)
-                                        @php
-                                        $total += $s->rating;
-                                        @endphp
-                                        <td>{{$s->rating}}</td>
-                                        @endforeach
-                                        <td>{{$total}}</td>
-                                    </tr>
+                                        <tr>
+                                            <td>{{ ++$i }}</td>
+                                            <td>{{$a->name}}</td>
+                                            @php
+                                            $scr = $scores->where('ida', $a->id)->all();
+                                            @endphp
+                                            @foreach ($scr as $s)
+                                                <td>{{$s->rating}}</td>
+                                            @endforeach
+                                            <td>{{$totalPerRow[$a->id]}}</td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>

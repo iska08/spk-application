@@ -70,7 +70,7 @@ class NormalizationController extends Controller
                 }
                 $sqrt = sqrt($total);
                 $normalisasi = $afilter[$icw]->rating / $sqrt;
-                $result = number_format($normalisasi, 6, '.', ''); // Output dengan 6 digit di belakang koma
+                $result = number_format($normalisasi, 2, '.', '');
                 $afilter[$icw]->rating = $result;
             }
         }

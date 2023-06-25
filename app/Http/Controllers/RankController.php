@@ -53,6 +53,9 @@ class RankController extends Controller
 
         $criteriaweights = CriteriaWeight::get();
 
+        // Inisialisasi array untuk menyimpan total nilai per baris
+        $totalPerRow = [];
+
         // Normalization
         foreach ($alternatives as $a) {
             // Get all scores for each alternative id
@@ -78,16 +81,23 @@ class RankController extends Controller
                 $normalisasi = $afilter[$icw]->rating / $sqrt;
 
                 // MENGHITUNG NILAI DISTANCE SCORE
-                $a = $normalisasi;
-                $r = $cw->id;
-                $distance = pow(pow(0.5 * $a, 3) + pow(0.5 * $r, 3), 1/3);
+                $r1 = $normalisasi;
+                $r2 = $cw->id;
+                $distance = pow(pow(0.5 * $r1, 3) + pow(0.5 * $r2, 3), 1/3);
 
                 // MENGHITUNG NILAI PREFERENSI DAN NILAI DISTANCE SCORE
                 $pref = $distance * $cw->weight;
-                $result = round($pref, 6);
-                $afilter[$icw]->rating = number_format($result, 6, '.', '');
+                $result = round($pref, 15);
+                $afilter[$icw]->rating = number_format($result, 2, '.', '');
+
+                // Tambahkan total ke dalam array total per baris
+                if (!isset($totalPerRow[$a->id])) {
+                    $totalPerRow[$a->id] = $result;
+                } else {
+                    $totalPerRow[$a->id] += $result;
+                }
             }
         }
-        return view('rank', compact('scores', 'alternatives', 'criteriaweights'))->with('i', 0);
+        return view('rank', compact('scores', 'alternatives', 'criteriaweights', 'totalPerRow'))->with('i', 0);
     }
 }
