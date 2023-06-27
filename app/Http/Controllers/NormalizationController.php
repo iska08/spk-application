@@ -16,6 +16,7 @@ class NormalizationController extends Controller
      */
     public function index()
     {
+        // Mengambil semua skor alternatif beserta informasi terkait
         $scores = AlternativeScore::select(
             'alternativescores.id as id',
             'alternatives.id as ida',
@@ -29,7 +30,8 @@ class NormalizationController extends Controller
             ->leftJoin('criteriaweights', 'criteriaweights.id', '=', 'alternativescores.criteria_id')
             ->leftJoin('criteriaratings', 'criteriaratings.id', '=', 'alternativescores.rating_id')
             ->get();
-            
+        
+        // Mengambil semua skor alternatif (versi kedua)    
         $cscores = AlternativeScore::select(
             'alternativescores.id as id',
             'alternatives.id as ida',
@@ -44,24 +46,27 @@ class NormalizationController extends Controller
             ->leftJoin('criteriaratings', 'criteriaratings.id', '=', 'alternativescores.rating_id')
             ->get();
 
+        // Mengambil semua alternatif
         $alternatives = Alternative::get();
+
+        // Mengambil semua bobot kriteria
         $criteriaweights = CriteriaWeight::get();
 
-        // Normalization
+        // Normalisasi
         foreach ($alternatives as $a) {
-            // Get all scores for each alternative id
+            // Mengambil semua skor untuk setiap id alternatif
             $afilter = $scores->where('ida', $a->id)->values()->all();
-            // Loop each criteria
+            // Looping setiap kriteria
             foreach ($criteriaweights as $icw => $cw) {
-                // Get all rating value for each criteria
+                // Mengambil semua nilai rating untuk setiap kriteria
                 $rates = $cscores->map(function ($val) use ($cw) {
                     if ($cw->id == $val->idw) {
                         return $val->rating;
                     }
                 })->toArray();
 
-                // array_filter for removing null value caused by map,
-                // array_values for reindexing the array
+                // Menghapus nilai null yang dihasilkan oleh map,
+                // Mengindeks ulang array
                 $rates = array_values(array_filter($rates));
 
                 $total = 0;

@@ -61,12 +61,12 @@ class AlternativeController extends Controller
             'name' => 'required'
         ]);
 
-        // Save the alternative
+        // Menyimpan alternatif
         $alt = new Alternative;
         $alt->name = $request->name;
         $alt->save();
 
-        // Save the score
+        // Menyimpan skor
         $criteriaweight = CriteriaWeight::get();
         foreach ($criteriaweight as $cw) {
             $score = new AlternativeScore();
@@ -114,7 +114,7 @@ class AlternativeController extends Controller
      */
     public function update(Request $request, Alternative $alternative)
     {
-        // Save the score
+        // Menyimpan Skor
         $scores = AlternativeScore::where('alternative_id', $alternative->id)->get();
         $criteriaweight = CriteriaWeight::get();
         foreach ($criteriaweight as $key => $cw) {

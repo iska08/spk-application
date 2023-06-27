@@ -26,6 +26,7 @@
                                         <th>{{$c->name}}</th>
                                         @endforeach
                                         <th>Total</th>
+                                        <th>Rank</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,6 +41,7 @@
                                                 <td>{{$s->rating}}</td>
                                             @endforeach
                                             <td>{{$totalPerRow[$a->id]}}</td>
+                                            <td>{{$ranking[$a->id]}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

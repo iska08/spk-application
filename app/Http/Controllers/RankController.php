@@ -16,6 +16,7 @@ class RankController extends Controller
      */
     public function index()
     {
+        // Mengambil skor-skor dari model AlternativeScore dengan melakukan join terhadap tabel-tabel terkait
         $scores = AlternativeScore::select(
             'alternativescores.id as id',
             'alternatives.id as ida',
@@ -31,9 +32,9 @@ class RankController extends Controller
             ->leftJoin('criteriaratings', 'criteriaratings.id', '=', 'alternativescores.rating_id')
             ->get();
 
-        // duplicate scores object to get rating value later,
-        // because any call to $scores object is pass by reference
-        // clone, replica, tobase didnt work
+        // Menduplikasi objek $scores untuk mendapatkan nilai rating nanti,
+        // karena setiap panggilan objek $scores adalah pass by reference
+        // clone, replica, dan tobase tidak berhasil
         $cscores = AlternativeScore::select(
             'alternativescores.id as id',
             'alternatives.id as ida',
@@ -49,28 +50,30 @@ class RankController extends Controller
             ->leftJoin('criteriaratings', 'criteriaratings.id', '=', 'alternativescores.rating_id')
             ->get();
 
+        // Mengambil data alternatif dari model Alternative
         $alternatives = Alternative::get();
 
+        // Mengambil data bobot kriteria dari model CriteriaWeight
         $criteriaweights = CriteriaWeight::get();
 
         // Inisialisasi array untuk menyimpan total nilai per baris
         $totalPerRow = [];
 
-        // Normalization
+        // Normalisasi
         foreach ($alternatives as $a) {
-            // Get all scores for each alternative id
+            // Mendapatkan semua skor untuk setiap id alternatif
             $afilter = $scores->where('ida', $a->id)->values()->all();
-            // Loop each criteria
+            // Melakukan loop pada setiap kriteria
             foreach ($criteriaweights as $icw => $cw) {
-                // Get all rating value for each criteria
+                // Mendapatkan semua nilai rating untuk setiap kriteria
                 $rates = $cscores->map(function ($val) use ($cw) {
                     if ($cw->id == $val->idw) {
                         return $val->rating;
                     }
                 })->toArray();
 
-                // array_filter for removing null value caused by map,
-                // array_values for reindexing the array
+                // array_filter digunakan untuk menghapus nilai null yang disebabkan oleh map,
+                // array_values digunakan untuk mengindeks kembali array
                 $rates = array_values(array_filter($rates));
 
                 $total = 0;
@@ -80,12 +83,12 @@ class RankController extends Controller
                 $sqrt = sqrt($total);
                 $normalisasi = $afilter[$icw]->rating / $sqrt;
 
-                // MENGHITUNG NILAI DISTANCE SCORE
+                // Menghitung Nilai Distance Score
                 $r1 = $normalisasi;
                 $r2 = $cw->id;
                 $distance = pow(pow(0.5 * $r1, 3) + pow(0.5 * $r2, 3), 1/3);
 
-                // MENGHITUNG NILAI PREFERENSI DAN NILAI DISTANCE SCORE
+                // Mengghitung Nilai Preferensi dan Nilai Distance Score
                 $pref = $distance * $cw->weight;
                 $result = round($pref, 15);
                 $afilter[$icw]->rating = number_format($result, 2, '.', '');
@@ -98,6 +101,17 @@ class RankController extends Controller
                 }
             }
         }
-        return view('rank', compact('scores', 'alternatives', 'criteriaweights', 'totalPerRow'))->with('i', 0);
+
+        // Melakukan perangkingan berdasarkan total nilai per baris
+        $ranking = $totalPerRow;
+        arsort($ranking);
+
+        // Menghitung peringkat (rank)
+        $rank = 1;
+        foreach ($ranking as $key => $value) {
+            $ranking[$key] = $rank++;
+        }
+
+        return view('rank', compact('scores', 'alternatives', 'criteriaweights', 'totalPerRow', 'ranking'))->with('i', 0);
     }
 }
