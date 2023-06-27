@@ -29,7 +29,7 @@
                                 <li>Masuk ke menu "Kriteria & Bobot" untuk menambahkan kriteria beserta bobotnya.</li>
                                 <li>Kemudian masuk ke menu "Rating Kriteria" untuk memberikan pilihan rating pada masing-masing kriteria.</li>
                                 <li>Gunakan menu "Alternatif & Skor" untuk menambahkan alternatif dan ratingnya.</li>
-                                <li>Cek menu "Ranking" untuk melihat hasilnya, klik kolom Total pada tabel untuk mengurutkannya berdasarkan nilai totalnya.</li>
+                                <li>Cek menu "Ranking" untuk melihat hasilnya.</li>
                             </ol>
                         </div>
                     </div>
